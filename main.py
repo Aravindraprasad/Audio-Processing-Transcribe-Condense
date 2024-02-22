@@ -35,7 +35,12 @@ def on_closing():
             os.remove("./.transcription.txt")
             # list_desktop_files()
         except FileNotFoundError:
-            print("One or both files were not found.")
+            try:
+                os.remove("./.transcription.txt")
+            except FileNotFoundError:
+                print("both files were not found.")
+        print("Removed Temp Files")
+        
     root.destroy()
 
 def select_file():
@@ -113,17 +118,14 @@ def summary():
             summary = summary+ " " + word
     text_widget.delete('1.0', END)
     add_text(text_widget,summary)
-    # showinfo("hello",summary)
 
 
 def DAudio():
     # Remove the hidden attribute from the file
-    win32file.SetFileAttributes("audio.wav", win32con.FILE_ATTRIBUTE_NORMAL)
-    # file_path = filedialog.askdirectory()
-    # if file_path:
-    #     file_path = os.path.join(file_path, "audio_transcription.wav")
-    # with open(file_path, "w") as f:
-    #         f.write(text) 
+    if messagebox.askokcancel("Download", " Do you want to download ?"):
+        win32file.SetFileAttributes(".audio.wav", win32con.FILE_ATTRIBUTE_NORMAL)
+        os.rename('.audio.wav', 'audio.wav')
+        
 
 def DTxt(text_widget):
     # Remove the hidden attribute from the file
