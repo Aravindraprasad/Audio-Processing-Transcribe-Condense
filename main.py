@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import messagebox
-from tkinter import ttk
+from tkinter import ttk , END
 from tkinter import filedialog as fd
 from tkinter.messagebox import showinfo
 from tkhtmlview import HTMLLabel
@@ -14,6 +14,12 @@ import win32file
 import win32con
 import os
 from tkinter import filedialog
+
+# modules for text-summerzation
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize, sent_tokenize
+
 
 def list_desktop_files():
     desktop_path = os.path.join(os.path.expanduser('~'), 'Desktop')
@@ -96,9 +102,28 @@ def texttospeech(text_widget):
 def stop_speech():
     text_speech.stop()
 
+def summary():
+    text = text_widget.get('1.0', 'end-1c')
+    stopWords = set(stopwords.words("english"))
+    words = word_tokenize(text)
+    summary = ""
+    for word in words:
+        word = word.lower()
+        if word not in stopWords:
+            summary = summary+ " " + word
+    text_widget.delete('1.0', END)
+    add_text(text_widget,summary)
+    # showinfo("hello",summary)
+
+
 def DAudio():
     # Remove the hidden attribute from the file
     win32file.SetFileAttributes("audio.wav", win32con.FILE_ATTRIBUTE_NORMAL)
+    # file_path = filedialog.askdirectory()
+    # if file_path:
+    #     file_path = os.path.join(file_path, "audio_transcription.wav")
+    # with open(file_path, "w") as f:
+    #         f.write(text) 
 
 def DTxt(text_widget):
     # Remove the hidden attribute from the file
@@ -154,6 +179,12 @@ speech_button.grid(row=2, column=6, columnspan=2,padx=5, pady=5, sticky='we')
 # Create a button to pause speech
 pause_button = ttk.Button(root, text="Pause Speech", command=stop_speech)
 pause_button.grid(row=3, column=6, columnspan=2, padx=5, pady=5, sticky='we')
+pause_button.bind(stop_speech) 
+
+# Create a button to pause speech
+pause_button = ttk.Button(root, text="Summerization", command=summary)
+pause_button.grid(row=4, column=6, columnspan=2, padx=5, pady=5, sticky='we')
+
 
 
 # Create a Text widget
