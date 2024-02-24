@@ -30,7 +30,7 @@ Clone the project
   git clone https://github.com/Aravindraprasad/Audio-Processing-Transcribe-Condense.git
 ```
 
-Download FFMPEG set path in Envirnomental Variable
+Download FFMPEG save in C Drive &  set path in environmental Variable
 
 ```bash
   https://ffmpeg.org/download.html#build-windows
